@@ -1,13 +1,12 @@
 ﻿using DatingApp.API.Data;
 using DatingApp.API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class MembersController(AppDbContext context) : ControllerBase
+public class MembersController(AppDbContext context) : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<User[]>> GetMembers()
@@ -15,6 +14,7 @@ public class MembersController(AppDbContext context) : ControllerBase
         return await context.Users.ToArrayAsync();
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetMemberById(string id)
     {
